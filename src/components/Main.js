@@ -93,7 +93,7 @@ class AppComponent extends React.Component {
         imgsArrangeTopArr.forEach(function(value,index){
           imgsArrangeTopArr[index].pos = {
             top:getRanNum(vPosRangeTopY[0],vPosRangeTopY[1]),
-            let:getRanNum(vPosRangeX[0],vPosRangeX[1])
+            left:getRanNum(vPosRangeX[0],vPosRangeX[1])
           }
         });
         //布局左右两侧图片
