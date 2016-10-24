@@ -13,7 +13,12 @@ html,body{ width: 100%; height: 100%; background: #222;}
       padding: 20px;
       background-color: #fff;
       box-sizing:border-box;
+      transform-style:preserve-3d;
+      transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
       img{ width: 200px; height: 130px;}
+      &.is-inverse {
+        transform:rotateY(180deg);
+      }
     }
     figcaption{
       text-align: center;
@@ -21,6 +26,21 @@ html,body{ width: 100%; height: 100%; background: #222;}
         margin: 10px 0 0 0;
         color: #a0a0a0;
         font-size: 16px;
+      }
+      .img-back{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        color: #a7a0a2;
+        font-size: 22px;
+        line-height: 1.25;
+        text-align: left;
+        background-color: #fff;
+        box-sizing: border-box;
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
       }
     }
   }
