@@ -31,7 +31,11 @@ class ImgFigure extends React.Component {
   }
   //点击处理函数
   handleClick(e){
-    this.props.inverse();
+    if(this.props.arrange.isCenter){
+      this.props.inverse();
+    }else{
+      this.props.center()
+    }
     e.stopPropagation();
   }
 
@@ -41,7 +45,10 @@ class ImgFigure extends React.Component {
       styleObj = this.props.arrange.pos
     }
     if(this.props.arrange.rotate){
-      styleObj['transform'] = 'rotate('+ this.props.arrange.rotate + 'deg)';
+      styleObj.transform = 'rotate('+ this.props.arrange.rotate + 'deg)';
+    }
+    if(this.props.arrange.isCenter){
+      styleObj.zIndex = 11;
     }
     var imgFigureClassName = 'img-figure';
     imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
@@ -59,6 +66,34 @@ class ImgFigure extends React.Component {
   }
 }
 
+class ControllerUnits extends React.Component{
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+  //点击处理函数
+  handleClick(e){
+    if(this.props.arrange.isCenter){
+      this.props.inverse();
+    }else{
+      this.props.center()
+    }
+    e.stopPropagation();
+  }
+  render(){
+    let ctrlClassName = 'controller-units';
+    if(this.props.arrange.isCenter){
+      ctrlClassName += ' is-center';
+      if(this.props.arrange.isInverse){
+        ctrlClassName += ' is-inverse';
+      }
+    }
+    return (
+      <span className={ctrlClassName} onClick = {this.handleClick}>
+      </span>
+      );
+  }
+}
 class AppComponent extends React.Component {
   //初始化状态
   constructor(props) {
@@ -71,7 +106,8 @@ class AppComponent extends React.Component {
             top: '0'
           },
           rotate:0,
-          isInverse:false
+          isInverse:false,
+          isCenter:false
         }*/
       ],
       Constant:{
@@ -104,6 +140,12 @@ class AppComponent extends React.Component {
     }.bind(this)
   }
 
+  //被点击图片居中
+  center(index){
+    return function(){
+      this.rearrange(index)
+    }.bind(this)
+  }
 
   //图片排布重置
   rearrange(centerIndex) {
@@ -124,8 +166,11 @@ class AppComponent extends React.Component {
         imgsArrangeCenterArr =imgsArrangeArr.splice(centerIndex,1);
 
         //首先居中index图片
-        imgsArrangeCenterArr[0].pos = centerPos;
-        imgsArrangeCenterArr[0].rotate = 0;
+        imgsArrangeCenterArr[0] = {
+          pos:centerPos,
+          rotate:0,
+          isCenter:true
+        }
 
         topImgSpliceIndex = Math.floor(Math.random()*(imgsArrangeArr.length - topImgNum));
         imgsArrangeTopArr = imgsArrangeArr.splice(topImgSpliceIndex,topImgNum);
@@ -136,7 +181,8 @@ class AppComponent extends React.Component {
               top:getRanNum(vPosRangeTopY[0],vPosRangeTopY[1]),
               left:getRanNum(vPosRangeX[0],vPosRangeX[1])
             },
-            rotate:getRandomDeg()
+            rotate:getRandomDeg(),
+            isCenter:false
           }
         });
         //布局左右两侧图片
@@ -152,7 +198,8 @@ class AppComponent extends React.Component {
               top:getRanNum(hPosRangeY[0],hPosRangeY[1]),
               left:getRanNum(hPosRangeLoRX[0],hPosRangeLoRX[1])
             },
-            rotate:getRandomDeg()
+            rotate:getRandomDeg(),
+            isCenter:false
           }
         }
         if(imgsArrangeTopArr && imgsArrangeTopArr[0]){
@@ -211,11 +258,14 @@ class AppComponent extends React.Component {
             top:0
           },
           totate:0,
-          isInverse:false
+          isInverse:false,
+          isCenter:false
         }
       }
-      ImgFigures.push(<ImgFigure key={idx} ref={'imgFigure'+idx} data={item} arrange={this.state.imgsArrangeArr[idx]} inverse={this.inverse(idx)} />);      
-    }.bind(this))
+      ImgFigures.push(<ImgFigure key={idx} ref={'imgFigure'+idx} data={item} arrange={this.state.imgsArrangeArr[idx]} inverse={this.inverse(idx)} center={this.center(idx)} />);
+
+        controllerUnits.push(<ControllerUnits key={idx} arrange={this.state.imgsArrangeArr[idx]} arrange={this.state.imgsArrangeArr[idx]} inverse={this.inverse(idx)} center={this.center(idx)} />);
+    }.bind(this));
     return(
       <section className="stage" ref="stage">
         <section className="img-sec">
