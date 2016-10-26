@@ -12,4 +12,4 @@ react 图片展示特效
 
 ###webpack build 生成压缩资源到dist目录
 
->>演示地址：https://marsdes.github.io/react_gallery/
+>演示地址：https://marsdes.github.io/react_gallery/
