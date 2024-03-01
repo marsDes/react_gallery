@@ -10,6 +10,6 @@ react 图片展示特效
 
 ###nmp start 运行热测试
 
-###webpack build 生成压缩资源到dist目录
+###webpack build 生成压缩资源到dist目录 test
 
 >演示地址：https://marsdes.github.io/react_gallery/
